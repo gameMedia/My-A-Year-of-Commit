@@ -13,6 +13,18 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="99.Default">
+      <UniqueIdentifier>{2a1e0918-89d5-4976-ab80-f2b4c5491126}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Chess">
+      <UniqueIdentifier>{b50f0f04-7ff2-4d51-9590-950bccb82d37}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Chess\00.ChessBoard">
+      <UniqueIdentifier>{190c0df1-18cc-4e99-8854-1e364f754775}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Chess\01.BoardSlot">
+      <UniqueIdentifier>{08a49d46-3e89-4600-b3a5-7a23979a4492}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -27,10 +39,22 @@
     <ClInclude Include="WindowsProject1.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="BoardSlot.h">
+      <Filter>01.Chess\01.BoardSlot</Filter>
+    </ClInclude>
+    <ClInclude Include="ChessBoard.h">
+      <Filter>01.Chess\00.ChessBoard</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WindowsProject1.cpp">
       <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="BoardSlot.cpp">
+      <Filter>01.Chess\01.BoardSlot</Filter>
+    </ClCompile>
+    <ClCompile Include="ChessBoard.cpp">
+      <Filter>01.Chess\00.ChessBoard</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -43,6 +67,12 @@
       <Filter>리소스 파일</Filter>
     </Image>
     <Image Include="WindowsProject1.ico">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="Images\ChessBoard.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="Images\ChessIcon.bmp">
       <Filter>리소스 파일</Filter>
     </Image>
   </ItemGroup>
