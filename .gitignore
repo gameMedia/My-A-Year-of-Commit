@@ -19,3 +19,4 @@
 *.app
 x64/
 .vs/
+Debug/
