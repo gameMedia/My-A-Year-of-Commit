@@ -1,2 +1,6 @@
-﻿  ChessBoard.cpp
-  WindowsProject1.vcxproj -> C:\Users\media\source\repos\Server\ChessBoard_Client\x64\Debug\WindowsProject1.exe
+﻿  BoardSlot.cpp
+  ChessBoard.cpp
+  WindowsProject1.cpp
+  코드를 생성하고 있습니다...
+  LINK : C:\Users\media\OneDrive\문서\GitHub\My-A-Year-of-Commit\ChessBoard_Client\x64\Debug\WindowsProject1.exe을(를) 찾을 수 없거나 마지막 증분 링크에 의해 빌드되지 않았습니다. 전체 링크를 수행하고 있습니다.
+  WindowsProject1.vcxproj -> C:\Users\media\OneDrive\문서\GitHub\My-A-Year-of-Commit\ChessBoard_Client\x64\Debug\WindowsProject1.exe
