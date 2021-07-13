@@ -1,5 +1,5 @@
 #include "Network.h"
-
+#include "ChessBoard.h"
 
 Network* Network::m_pInstance = nullptr;
 
@@ -26,4 +26,38 @@ bool Network::Init(const string& strServerIP)
 	
 
 	return true;
+}
+
+void Network::Set_ChessBoard(ChessBoard* chessboard)
+{
+	cout << "네트워크에 체스보드를 알려줘" << endl;
+	m_ChessBoard = chessboard;
+}
+
+void Network::MoveChessPiece(short mouse_x, short mouse_y)
+{
+	int sendByte = 0;
+	int recvByte = 0;
+	char recvBuf[4] = {};
+
+	// make SendBuf
+	*((short*)&m_SendBuf[0]) = mouse_x;
+	*((short*)&m_SendBuf[2]) = mouse_y;
+	*((short*)&m_SendBuf[4]) = m_ChessBoard->GetPiecePos_row();
+	*((short*)&m_SendBuf[6]) = m_ChessBoard->GetPiecePos_column();
+
+	sendByte = send(m_client_sock, m_SendBuf, sizeof(m_SendBuf), 0);
+	recvByte = recv(m_client_sock, recvBuf, sizeof(recvBuf), 0);
+
+	if (recvByte > 0)
+	{ // recvData
+		short row = *((short*)&recvBuf[0]);
+		short column = *((short*)&recvBuf[2]);
+
+		if (row >= 0 && column >= 0)
+		{ // 못 옮길 경우 -1이 넘어옴
+			//cout << "말옮겨" << endl;
+			m_ChessBoard->SetPiecePosition(row, column);
+		}
+	}
 }

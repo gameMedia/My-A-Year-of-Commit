@@ -10,14 +10,11 @@ public:
 	void SetPosition(int row, int column);
 
 	// Get
-	int GetTop() { return top; }
-	int GetBottom() { return bottom; }
-	int GetLeft() { return left; }
-	int GetRight() { return right; }
+	const int& GetTop_x() { return top_x; }
+	const int& GetTop_y() { return top_y; }
+
 private:
-	int top;
-	int left;
-	int bottom;
-	int right;
+	int top_x;
+	int top_y;
 };
 

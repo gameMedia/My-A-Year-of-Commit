@@ -2,6 +2,8 @@
 
 #include "Protocol.h"
 
+class ChessBoard;
+
 class Network
 {
 private:
@@ -19,6 +21,7 @@ public:
 	}
 	static void Destroy_Instance()
 	{
+		
 		if (m_pInstance != nullptr)
 		{
 			delete m_pInstance;
@@ -27,13 +30,18 @@ public:
 	}
 public:
 	bool Init(const string& strServerIP);
-
+	void Set_ChessBoard(ChessBoard* chessboard);
+	void MoveChessPiece(short mouse_x, short mouse_y);
+	void Close_Server() { closesocket(m_client_sock); }
 
 private:
-	char m_DataBuf[8];
+	char m_SendBuf[8]; 
 	string m_serverIP;
 	WSADATA m_WSAdata;
 	SOCKET m_client_sock;
 	SOCKADDR_IN m_serverAddr;
+
+	ChessBoard* m_ChessBoard;
+
 };
 

@@ -7,6 +7,13 @@
 #include "framework.h"
 #include "WindowsProject1.h"
 #include "ChessBoard.h"
+
+#ifdef UNICODE
+#pragma comment(linker, "/entry:wWinMainCRTStartup /subsystem:console")
+#else
+#pragma comment(linker, "/entry:WinMainCRTStartup /subsystem:console")
+#endif
+
 #define MAX_LOADSTRING 100
 
 // 전역 변수:
@@ -14,8 +21,8 @@ HINSTANCE hInst;                                // 현재 인스턴스입니다.
 WCHAR szTitle[MAX_LOADSTRING];                  // 제목 표시줄 텍스트입니다.
 WCHAR szWindowClass[MAX_LOADSTRING];            // 기본 창 클래스 이름입니다.
 
-
-
+// 체크판
+ChessBoard* g_board;
 
 // 이 코드 모듈에 포함된 함수의 선언을 전달합니다:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
@@ -32,6 +39,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	UNREFERENCED_PARAMETER(lpCmdLine);
 
 	// TODO: 여기에 코드를 입력합니다.
+	g_board = new ChessBoard();
+	Network::Get_Instance()->Set_ChessBoard(g_board);
 
 	// 전역 문자열을 초기화합니다.
 	LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
@@ -43,6 +52,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	{
 		return FALSE;
 	}
+
+
 
 	HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_WINDOWSPROJECT1));
 
@@ -109,6 +120,8 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 	HWND hWnd = CreateWindowW(szWindowClass, szTitle, dwStyle, CW_USEDEFAULT,
 		CW_USEDEFAULT, rc.right - rc.left, rc.bottom - rc.top, nullptr, nullptr, hInstance, nullptr);
 
+	g_board->Init(hInst);
+
 	if (!hWnd)
 	{
 		return FALSE;
@@ -132,8 +145,8 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 //
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-	static ChessBoard g_board(hInst);
 
+	
 	switch (message)
 	{
 	case WM_CREATE:
@@ -147,21 +160,24 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		HDC hdc = BeginPaint(hWnd, &ps);
 		HDC MemDC = CreateCompatibleDC(hdc);
 		// TODO: 여기에 hdc를 사용하는 그리기 코드를 추가합니다...
-		g_board.DrawBoard(hdc, MemDC);
+		g_board->DrawBoard(hdc, MemDC);
 		DeleteDC(MemDC);
 		EndPaint(hWnd, &ps);
 	}
 	break;
 	case WM_LBUTTONDOWN:
 	{
-		int row = LOWORD(lParam) / 64;
-		int column = HIWORD(lParam) / 64;
+		short row = LOWORD(lParam); // x
+		short column = HIWORD(lParam); // y
 
-		g_board.SetPiecePosition(row, column);
+		Network::Get_Instance()->MoveChessPiece(row, column);
+		
 		InvalidateRect(hWnd, NULL, FALSE);
 	}
 	break;
 	case WM_DESTROY:
+		Network::Get_Instance()->Close_Server();
+		WSACleanup();
 		PostQuitMessage(0);
 		break;
 	default:
@@ -190,9 +206,8 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 				EndDialog(hDlg, LOWORD(wParam));
 			return (INT_PTR)TRUE;
 		}
-		if (LOWORD(wParam) == IDCANCEL)
+		else if (LOWORD(wParam) == IDCANCEL)
 		{
-
 			PostQuitMessage(0);
 		}
 		break;
